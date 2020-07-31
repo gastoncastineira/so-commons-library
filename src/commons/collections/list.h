@@ -33,8 +33,8 @@
 
 	/**
 	* @NAME: list_destroy
-	* @DESC: Libera las estructuras administrativas de la lista pasada por parametro, dejandola inutilizable.
-	* 	 Esta función NO libera los elementos de la lista. 
+	* @DESC: Destruye una lista sin liberar
+	* los elementos contenidos en los nodos
 	*/
 	void list_destroy(t_list *);
 
