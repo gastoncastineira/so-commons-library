@@ -27,20 +27,38 @@
 
 	/**
 	* @NAME: list_create
-	* @DESC: Crea una lista
+	* @DESC: Inicializa una nueva lista para poder operar con ella y retorna el puntero a la misma.
 	*/
 	t_list * list_create();
 
 	/**
 	* @NAME: list_destroy
-	* @DESC: Destruye una lista sin liberar
-	* los elementos contenidos en los nodos
+	* @DESC: Libera las estructuras administrativas de la lista pasada por parametro, dejandola inutilizable.
+	* 	 Esta función NO libera los elementos de la lista. 
 	*/
 	void list_destroy(t_list *);
 
 	/**
 	* @NAME: list_destroy_and_destroy_elements
-	* @DESC: Destruye una lista y sus elementos
+	* @DESC: Destruye una lista y aplica la función pasada por parametro a cada uno de sus elementos. 
+                 Dicha función debe encargarse de liberar la memoria asignada al elemento propiamente dicho y a su contenido (si correspondiese).
+
+		 Ejemplo: 
+		 
+		 typedef struct{
+                    char * contenidoConMemoriaAsignada1;
+                    char * contenidoConMemoriaAsignada2;
+		 }elementoDeLista;
+		 
+		 void element_destroyer (void * elemento){
+		    free(elemento->contenidoConMemoriaAsignada1);
+		    free(elemento->contenidoConMemoriaAsignada2);
+		    free(elemento);
+		 }
+
+		 t_list * listaDeElementos;
+
+                 list_destroy_and_destroy_elements(listaDeElementos,(void *)element_destroyer);	
 	*/
 	void list_destroy_and_destroy_elements(t_list*, void(*element_destroyer)(void*));
 
@@ -142,13 +160,14 @@
 
 	/**
 	* @NAME: list_clean
-	* @DESC: Quita todos los elementos de la lista.
+	* @DESC: Quita todos los elementos de la lista, sin destruirlos.
+	*        A diferencia de la función "list_destroy", en este caso la lista sigue existiendo y pudiendo utilizarse.
 	*/
 	void list_clean(t_list *);
 
 	/**
 	* @NAME: list_clean
-	* @DESC: Quita y destruye todos los elementos de la lista
+	* @DESC: Quita y destruye todos los elementos de la lista.
 	*/
 	void list_clean_and_destroy_elements(t_list *self, void(*element_destroyer)(void*));
 
